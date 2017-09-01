@@ -10,9 +10,8 @@ var Pacman = {
 		wall=[];
 		up=true,down=true,left=true,right=true;
 		updateDelay=0;
-		new_direction = null;
 		speed=11;
-		direction='right';
+		direction=null;
 		game.stage.backgroundColor = '#000000';
 		for (var i=0;i<snake.length;i++) {
 			wall[i]=game.add.sprite(snake[i].x,snake[i].y,'wall');
@@ -25,43 +24,39 @@ var Pacman = {
 	update: function() {
         if (cursors.right.isDown)
         {
-            new_direction = 'right';
+            direction = 'right';
         }
         else if (cursors.left.isDown)
         {
-            new_direction = 'left';
+            direction = 'left';
         }
         else if (cursors.up.isDown)
         {
-            new_direction = 'up';
+            direction = 'up';
         }
         else if (cursors.down.isDown)
         {
-            new_direction = 'down';
+            direction = 'down';
         }
 
         updateDelay++;
 
-        if (updateDelay % (20-speed) == 0) {
-
-			if(new_direction){
-                direction = new_direction;
-                new_direction = null;
-            }
+        if (updateDelay >=1) {
 
             if(direction == 'right' && right==true){
-                pacman.x = pacman.x + 15;
+                pacman.x = pacman.x + 3;
             }
             else if(direction == 'left' && left==true){
-                pacman.x = pacman.x - 15;
+                pacman.x = pacman.x - 3;
             }
             else if(direction == 'up' && up==true){
-                pacman.y = pacman.y - 15;
+                pacman.y = pacman.y - 3;
             }
             else if(direction == 'down' && down==true) {
-                pacman.y = pacman.y + 15;
+                pacman.y = pacman.y + 3;
             }
-            
+            updateDelay=0;
+            direction=null;
         }
 
         this.wallCollision();
@@ -70,24 +65,24 @@ var Pacman = {
 	wallCollision: function() {
 		right=true,left=true,down=true,up=true;
 		//check with borders
-		if(pacman.x >= 735) 
+		if(pacman.x >= 732.5) 
 			right=false;
 		if(pacman.x <= 0) 
 			left=false;
-		if (pacman.y >= 585) 
+		if (pacman.y >= 583) 
 			down=false;
 		if (pacman.y <= 0) 
 			up=false;
 
 		//check with walls
 		for(var i = 0; i < wall.length; i++) {
-			if(pacman.x==(wall[i].x-15)&&pacman.y==wall[i].y)
+			if(pacman.x==(wall[i].x-15)&&Math.abs(pacman.y-wall[i].y)<15)
 				right=false;
-			if(pacman.x==(wall[i].x+15)&&pacman.y==wall[i].y)
+			if(pacman.x==(wall[i].x+15)&&Math.abs(pacman.y-wall[i].y)<15)
 				left=false;
-			if(pacman.y==(wall[i].y-15)&&pacman.x==wall[i].x)
+			if(pacman.y==(wall[i].y-15)&&Math.abs(pacman.x-wall[i].x)<15)
 				down=false;
-			if(pacman.y==(wall[i].y+15)&&pacman.x==wall[i].x)
+			if(pacman.y==(wall[i].y+15)&&Math.abs(pacman.x-wall[i].x)<15)
 				up=false;
 		}	
 	}

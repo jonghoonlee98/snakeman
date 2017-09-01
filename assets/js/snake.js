@@ -23,8 +23,8 @@ var Snake = {
 
         game.stage.backgroundColor = '#000000';
 
-        var randY = (Math.floor(Math.random() * 38 )+1)* squareSize;
-        var randX = (Math.floor(Math.random() * 20 )+1)* squareSize;
+        var randY = (Math.floor(Math.random() * 34 )+3)* squareSize;
+        var randX = (Math.floor(Math.random() * 15 )+5)* squareSize;
         snake[0] = game.add.sprite(randX, randY, 'snake'); 
 
         this.generateTarget();
@@ -103,6 +103,13 @@ var Snake = {
 
         var randomY = (Math.floor(Math.random() * 32 )+4)* squareSize;
         var randomX = (Math.floor(Math.random() * 42 )+4)* squareSize;
+
+        for (var i=0;i<snake.length;i++) {
+            if ((randomX==(snake[i].x-15)&&randomY==snake[i].y)||(randomX==(snake[i].x+15)&&randomY==snake[i].y)||(randomY==(snake[i].y-15)&&randomX==snake[i].x)||(randomY==(snake[i].y+15)&&randomX==snake[i].x)) {
+                randomY = (Math.floor(Math.random() * 32 )+4)* squareSize;
+                randomX = (Math.floor(Math.random() * 42 )+4)* squareSize;
+            }
+        }
 
         target = game.add.sprite(randomX, randomY, 'target');
     },
